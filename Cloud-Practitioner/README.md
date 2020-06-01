@@ -59,3 +59,20 @@ There are over 100 edge locations that prevents DDOS attacts and improves perfor
 * ElastiCache - in-memory cache
 * DMS - Database Migration Services - orchestrator
 * Neptune - graph database service
+
+## Compute Services
+
+* EC2 - Elastic Compute Cloud
+* EC2 Autoscaling - scales automatically up or down
+* Lightsail - easiest way to run the service
+* ECS - Elastic Container Service - container management service for Docker
+* AWS Lambda - FaaS
+
+## Networking & Content Delivery
+
+* Cloudfront - CDN with low latency
+* VPC - Virtual Private Cloud
+* Direct Connect - high speed connector to AWS cloud
+* ELB - Elastic Load Balancing - can distibute across multiple zones, can bypass unhealthy instances
+* Route 53 - Domain name system (DNS)
+* API Gateway - managed service for creating APIs
