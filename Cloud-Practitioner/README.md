@@ -50,3 +50,12 @@ There are over 100 edge locations that prevents DDOS attacts and improves perfor
 * EFS - Elastic File System - network attached storage
 * Storage Gateway - enabled hybrid storage
 * Snowball - helpful for migrating data
+
+## Databases
+
+* RDS - Relational Database Service
+* DynamoDB - noSQL
+* Redshift - based on postgres, big-data solution
+* ElastiCache - in-memory cache
+* DMS - Database Migration Services - orchestrator
+* Neptune - graph database service
