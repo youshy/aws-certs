@@ -1,5 +1,32 @@
 # 01 - Elastic Beanstalk
 
+---
+
+## TL;DR
+
+* **Elastic Beanstalk** handles the deployment, from capacity provisioning, load balancing, auto-scaling to application health monitoring
+* Used when you want to run a web application but doesn't want to think about the infra
+* Free to use (pay for provisioned services: EC2, ELB, RDS)
+* Recommended for test and dev apps or small-size prod
+* Multiple preconfigured platforms
+* Can be run in a single container (using EC2) or multiple (using ECS)
+* Can launch either a **Web environment** or a **Worker environment**:
+  * Web: Single-Instance or Load-Balanced (difference is that Load-Balanced will have an Elastic Load Balancer)
+  * Worker: Uses SQS queue and initialises SQS daemon on EC2 instances
+* Deployment policies:
+  * All at once: takes all out of service, applies changes, puts them back. Fast, has downtime
+  * Rolling: updates services in batched, reduced capacity based on batch size. In case of failure: rollback
+  * Rolling with additional batches: adds new servers in batches to replace old, never reduces capacity. In case of failure: rollback
+  * Immutable: creates the same amount of servers, switches to new ones, removes old ones. Most secure, yet slowest
+* Rollback deployment policies requires Elastic Load Balancer - cannot be used with Single-Instance web
+* In-Place deployment is when deployment happens within the same environment, all EB policies are in-place
+* Blue/Green deployment is when deployment swaps environments outside of the current one
+* Folder with config files: `.ebextensions`
+* EB can use custom images
+* If EB creates RBS, then it will be destroyed when deleting EB environment
+
+---
+
 PaaS - Platform as a Service - a platform allowing customers to develop, run, and manage applications without the complexity of building and maintaining the infra typically associated with developing and launching an app. EB is an equivalent of Heroku, but on AWS.
 
 EB is not recommended for "Production" applications (in this case, talking about enterprise-size companies).
