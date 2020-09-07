@@ -66,8 +66,18 @@ It's the fastest but also the most dangerous deployment method
 
 1. Launch new instance that will be used to replace a batch;
 2. Deploy update app version to new batch;
-3. Attach the new batch and terminate the existing batch
+3. Attach the new batch and terminate the existing batch.
 
 > Rolling with additional batch ensure our capacity is never reduced. **this is important for application where a reduction in capacity could cause availability issues!**
 
 **IN CASE OF FAILURE** - additional rolling update is necessary to roll back the changes.
+
+## Immutable -Deployment method
+
+1. Create a new Auto Scailing Group (ASG) with EC2 instances;
+2. Deploy the updated version of the app on the new EC2 instances;
+3. Point the ELB to the new ASG and the delete the old ASG which will terminate the old EC2 instances.
+
+It's the safest way to deploy critical applications
+
+**IN CASE OF FAILURE** - terminate the new instances as the old still remains
