@@ -33,6 +33,8 @@ EB is powered by a CloudFormation template that sets up:
 
 ## Deployment policies
 
+> More info [HERE](http://blog.itaysk.com/2017/11/20/deployment-strategies-defined)
+
 Available options in Elastic Beanstalk:
 
 | Deployment Policy | Load Balanced Env | Single-Instance Env |
@@ -74,10 +76,48 @@ It's the fastest but also the most dangerous deployment method
 
 ## Immutable -Deployment method
 
-1. Create a new Auto Scailing Group (ASG) with EC2 instances;
+1. Create a new Auto Scaling Group (ASG) with EC2 instances;
 2. Deploy the updated version of the app on the new EC2 instances;
 3. Point the ELB to the new ASG and the delete the old ASG which will terminate the old EC2 instances.
 
 It's the safest way to deploy critical applications
 
-**IN CASE OF FAILURE** - terminate the new instances as the old still remains
+**IN CASE OF FAILURE** - terminate the new instances as the old still remains.
+
+## Deployment methods comparison
+
+| Method | Impact of failed deployment | Deploy time | No downtime | No DNS change | Rollback process | Code deployed to Instances |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| At at once | Downtime | Short | False | True | Manual | Existing |
+| Rolling | Single batch out of service; any successful batches before failure running new application version | Medium (time may vary) | True | True | Manual | Existing |
+| Rolling with additional batch | Minimal if first batch fails; otherwise, similar to **Rolling** | Medium (time may vary) | True | True | Manual | New and Existing |
+| Immutable | Minimal | Long | True | True | Terminate New | New |
+| Blue/green | Minimal | Long | True | False | Swap URL | New |
+
+## In-place vs blue/green
+
+> In-place deployments are all the deployment methods defined earlier.
+
+In-place could mean within the *scope of Elastic Beanstalk env*. All the deployment policies provided by EB could be considered as In-place as they are all within the scope of a single EB environment. That'd be: *All at once, Rolling, Rolling with additional batch and Immutable*.
+
+In-place could mean within *the scope of the same server*(not replacing the server). Deployment policies which do not involve the server being replaced. That'd be: *All and once and Rolling*.
+
+In-place could mean within *the scope of an uninterrupted server*. Traffic is never routed away from the server (taken out of service). Implements **zero-downtime** deploys where Blue/Green occurs on the server. EB is unable to deploy like this. Capistrano + Ruby on Rails + Unicorn would be an example of such deployment.
+
+### Blue/green in the context of Elastic Beanstalk
+
+In case of EB, **Immutable** deployment method is considered as In-place because all the changes occurs within the scope of EB container. Elastic Beanstalk defines Blue/Green deployment as swapping EB environments and this occurs on the DNS level.
+
+## Configuration files
+
+EB environments can be customised using configuration files. This can be found in a hidden folder `.ebextensions` in the root of the project, which contains `.config` files.
+
+`.config` files can: 
+
+1. Set options
+2. Configure Linux/Windows servers
+3. Define/configure custom resources
+
+## Environment manifest
+
+It's a file called `env.yml` which is stored in the root of the project.
