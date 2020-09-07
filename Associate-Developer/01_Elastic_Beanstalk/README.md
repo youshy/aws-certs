@@ -121,3 +121,57 @@ EB environments can be customised using configuration files. This can be found i
 ## Environment manifest
 
 It's a file called `env.yml` which is stored in the root of the project.
+
+### Example: Linux
+
+```yaml
+# Packages: download and install pre-packaged applications and components
+packages:
+  yum:
+    libmemcached: []
+    ruby-devel: []
+# Groups: create Linux/UNIX groups and assign group IDs
+groups:
+  groupAdmin: {}
+  groupDev:
+    gid: "12"
+# Users: create Linux/UNIX users
+users:
+  andrew:
+    groups:
+      - groupAdmin
+    uid: 87
+    homeDir: "/andrew"
+# Files: create files on the EC2 instance (inline or from url)
+files:
+  "/home/ec2-user/application.yml":
+    mode: "000755"
+    owner: root
+    group: root
+    content: |
+      SECRET: 000destruct0
+# Commands: execute commands on the EC2 instance before app setup
+commands:
+  1_project_root:
+    command: mkdir /var/www/app
+  2_link:
+    command: ln -s /var/www/app /app
+# Services: define which services should be started or stopped when the instance is launched
+services:
+  sysvinit:
+    nginx:
+      enabled: true
+      ensureRunning: true
+# Container Commands: execute commands that affects your application source code. Name is misleading, it doesn't necesarily mean container as in Docker.
+container_commands:
+  0_collectstatic:
+    command: "django-admin.py collectstatic --noinput"
+  1_syncdb:
+    command: "django-admin.py syncdb --noinput"
+    leader_only: true
+  2_migrate:
+    command: "django-admin.py migrate"
+    leader_only: true
+  3_customize:
+    command: "scripst/customize.sh"
+```
