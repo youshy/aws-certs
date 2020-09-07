@@ -175,3 +175,14 @@ container_commands:
   3_customize:
     command: "scripst/customize.sh"
 ```
+
+## Custom Image
+
+If necessary, there's an ability to run a custom image on EB. That might improve provisioning times.
+
+## Configuring RDS
+
+A database can be added **inside** or **outside** EB environment.
+
+* Inside EB - whenever the EB env is terminated, then the DB will be terminated as well. Mostly intended for dev.
+* Outside EB - persistent DB. Mostly intended for prod.
