@@ -42,5 +42,32 @@ Available options in Elastic Beanstalk:
 | Rolling with additional batch | True | False |
 | Immutable | True | True |
 
+## All At Once -Deployment method
 
+1. Deploy the new app version to all instances at the same time;
+2. Takes all instances **out of service** while the deployment progresses;
+3. Servers become available again.
 
+It's the fastest but also the most dangerous deployment method
+
+**IN CASE OF FAILURE** - rollback is performed by re-deploying old/original version to all instances.
+
+## Rolling -Deployment method
+
+1. Deploy the new app version to a batch of instances at a time;
+2. Takes batch's instances **out of service** while the deployment progresses;
+3. Reattaches updates instances;
+4. Goes onto next batch, taking them out of service;
+5. Reattaches those instances (rinse and repeat)
+
+**IN CASE OF FAILURE** - additional rolling update is necessary to roll back the changes.
+
+## Rolling with additional batch -Deployment method
+
+1. Launch new instance that will be used to replace a batch;
+2. Deploy update app version to new batch;
+3. Attach the new batch and terminate the existing batch
+
+> Rolling with additional batch ensure our capacity is never reduced. **this is important for application where a reduction in capacity could cause availability issues!**
+
+**IN CASE OF FAILURE** - additional rolling update is necessary to roll back the changes.
